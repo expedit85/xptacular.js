@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
 
-	console.log("REQUEST");
-	console.log(req.body, req.headers, req.params);
+	// console.log("REQUEST");
+	// console.log(req.body, req.headers, req.params);
 
 	res.ok = function(data) {
 		return res.json(data || null);
@@ -27,6 +27,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(express.static('../'));
+app.use(express.static('./'));
 
 
 var TheController = require('./TheController.js');

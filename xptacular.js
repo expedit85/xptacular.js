@@ -79,7 +79,7 @@ function xptacular(params) {
 
 			$box.find("[xp-param-type]").each(function(i,e){
 				var type = $(e).attr('xp-param-type');
-				var name = $(e).attr('name');
+				var name = $(e).attr('xp-param-name') || $(e).attr('name');
 				var value = getValue($(e));
 				switch (type) {
 					case 'path':
