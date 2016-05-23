@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1>Xpetacular Sample Page</h1>
+<h1>Xptacular Sample Page</h1>
 <!--
 
 <xp-expression> is:
@@ -85,7 +85,7 @@ div.xp-box .data {
 	<div class="gray-background" id="message" xp-result-value="jp:message"></div>
 	<div class="logo">
 		Powered by
-		<img src="/xpetacular-logo.png" xp-send-on="mouseenter" />
+		<img src="/xptacular-logo.png" xp-send-on="mouseenter" />
 	</div>
 </div>
 
@@ -151,7 +151,7 @@ div.xp-box .data {
      xp-request-url="/api/1.0/user/:uid"
      xp-request-method="GET"
      xp-before-request="js:$('#address_info, #user_info').show();"
-     xp-after-request="js:hshow('#user_info'); xpetacular('#address_info');"
+     xp-after-request="js:hshow('#user_info'); xptacular('#address_info');"
      xp-action="none">
 
 	<img class="spinner" src="https://stanfy.com/wp-content/uploads/2015/09/1-V3h-VWthi5lL0QySF6qZPw.gif" />
@@ -217,7 +217,7 @@ div.xp-box .data {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="https://cdn.rawgit.com/s3u/JSONPath/master/lib/jsonpath.js"></script>
 
-<script src="/xpetacular.js"></script>
+<script src="/xptacular.js"></script>
 
 <script src="https://cdn.rawgit.com/auth0/jwt-decode/master/build/jwt-decode.min.js"></script>
 
@@ -259,11 +259,11 @@ div.xp-box .data {
 			$('#address_info, #user_info').hide();
 		}
 		else {
-			xpetacular(['#address_info', '#user_info' ]);
+			xptacular(['#address_info', '#user_info' ]);
 			$('#logout').show();
 		}
 
-		setInterval(function() { xpetacular('#welcome'); }, 20000);
+		setInterval(function() { xptacular('#welcome'); }, 20000);
 	});
 
 </script>

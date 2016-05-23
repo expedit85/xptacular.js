@@ -1,14 +1,14 @@
 
 
-function xpetacular(params) {
+function xptacular(params) {
 
 	if (typeof params !== "undefined") {
 		if (params.constructor == Array) {
-			$(params).each(function(i,e){xpetacular(e);});
+			$(params).each(function(i,e){xptacular(e);});
 			return;
 		}
 		else if (params.constructor == String) {
-			xpetacular($(params));
+			xptacular($(params));
 			return;
 		}
 		else if (params.constructor == jQuery) {
@@ -45,7 +45,7 @@ function xpetacular(params) {
 			return JSONPath( { path: exp.substring(3).trim(), json: obj } );
 		}
 		else if (exp.indexOf("xp:") == 0) {
-			return xpetacular(exp.substring(3));
+			return xptacular(exp.substring(3));
 		}
 		else return exp;
 	};
@@ -152,7 +152,7 @@ function xpetacular(params) {
 	$(".xp-box").find("[xp-send-on]").each(function(i,e){
 		var eventName = $(e).attr('xp-send-on');
 		if (eventName) {
-			eventName = eventName + ".xpetacular";
+			eventName = eventName + ".xptacular";
 			$(e).off(eventName).on(eventName, function() {
 				self.run($(e).closest(".xp-box"));
 			});
@@ -162,4 +162,4 @@ function xpetacular(params) {
 }
 
 
-$(function() { xpetacular(); });
+$(function() { xptacular(); });
