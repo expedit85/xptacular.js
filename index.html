@@ -1,0 +1,273 @@
+<html>
+<body>
+<h1>Xpetacular Sample Page</h1>
+<!--
+
+<xp-expression> is:
+js: <javascript code>
+xp: <jquery selector>
+jp: <JSON path>
+
+-->
+<style>
+
+.gray-background {
+	background-color: #444;
+}
+
+.logo {
+	display: inline-block;
+	/* position: relative; */
+	margin-left: 50%;
+	margin-right: 0;
+	/* width: 50%; */
+	right: 0px;
+	/*border: 3px solid #73AD21;*/
+	padding: 4px;
+	text-align: right;
+}
+
+#message {
+	font-weight: bold;
+	color: white;
+	display: inline;
+}
+
+div.xp-box {
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	margin: 6px;
+}
+
+div.hidden {
+	display: none;
+}
+
+
+#address_info {
+	width: 400px;
+	height: 200px;
+	margin: auto;
+	padding: 4px;
+}
+
+img.spinner {
+	width: 100px;
+	height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	top: 50%;
+	left: 50%;
+}
+
+
+img.avatar {
+	width: 50px;
+	height: 50px;
+}
+
+div.xp-box .data {
+	display: none;
+}
+
+</style>
+
+
+<div class="xp-box"
+     id="welcome"
+     xp-request-url="/api/1.0/public"
+     xp-request-method="GET"
+     xp-before-request=""
+     xp-after-request="js: document.title=$('#message').text();"
+     xp-action="default">
+	<div class="gray-background" id="message" xp-result-value="jp:message"></div>
+	<div class="logo">
+		Powered by
+		<img src="/xpetacular-logo.png" xp-send-on="mouseenter" />
+	</div>
+</div>
+
+<div class="xp-box"
+     xp-request-url="/api/1.0/notfound"
+     xp-request-method="GET"
+     xp-before-request=""
+     xp-after-request="js:$('#notfoundmessage').text('not found test FAILED');"
+     xp-after-request-error="js:$('#notfoundmessage').text('not found test OK');"
+     xp-action="default">
+	<span id="notfoundmessage"></span>
+</div>
+
+
+<div class="xp-box hidden"
+     id="login"
+     xp-request-url="/api/1.0/user/login"
+     xp-request-method="POST"
+     xp-after-request="xp:#user_info"
+     xp-action="none">
+
+	[Login]
+	Email:
+	<input xp-param-type="form" type="text" name="email" value="foo@bar.com" />
+	Password:
+	<input xp-param-type="form" type="text" name="password" value="123456" />
+
+	<input type="button" name="send" value="Enviar" xp-send-on="click" />
+
+	<input id="jwt" type="hidden" xp-result-value="jp: access_token">
+	<input type="hidden" xp-result-value="js: storeJwt($('#jwt').val())" />
+
+	<br/>
+	<span>JWT: </span>
+	<textarea xp-result-value="jp:access_token">?????</textarea>
+
+	<br/>
+	<span>UID: </span>
+	<span xp-result-value="js:jwtdata.uid">?????</span>
+	
+	<span>HID: </span>
+	<span xp-result-value="js:jwtdata.hid">?????</span>
+</div>
+
+
+
+<div class="xp-box hidden"
+     id="logout"
+     xp-request-url="/api/1.0/user/:uid/logout"
+     xp-request-method="POST"
+     xp-after-request="js: clearJwt(); window.location.href = '/';"
+     xp-after-request-error="js:alert('Could not logout');"
+     xp-action="none">
+
+	<input xp-param-type="header" type="hidden" name="Access-Token" xp-param-value="js:jwt" />
+	<input xp-param-type="path" type="hidden" name=":uid" xp-param-value="js:jwtdata.uid" />
+	<input type="button" name="send" value="Sair" xp-send-on="click" />
+</div>
+
+
+<div class="xp-box"
+     id="user_info"
+     xp-request-url="/api/1.0/user/:uid"
+     xp-request-method="GET"
+     xp-before-request="js:$('#address_info, #user_info').show();"
+     xp-after-request="js:hshow('#user_info'); xpetacular('#address_info');"
+     xp-action="none">
+
+	<img class="spinner" src="https://stanfy.com/wp-content/uploads/2015/09/1-V3h-VWthi5lL0QySF6qZPw.gif" />
+
+	<div class="xp-box"
+	     xp-request-url="/api/1.0/user/:uid"
+	     xp-request-method="PUT"
+	     xp-before-request=""
+	     xp-after-request="xp:#user_info"
+	     xp-action="none">
+
+
+		<div class="data">
+			<input xp-param-type="header" type="hidden" name="Access-Token" xp-param-value="js:jwt" />
+			<input xp-param-type="path" type="hidden" name=":uid" xp-param-value="js:jwtdata.uid" />
+			<input xp-param-type="query" type="hidden" name="admin" xp-param-value="js:jwtdata.admin" />
+
+			<img class="avatar" src="#" xp-result-attr="src" xp-result-value="jp:image_url" />
+			<br/>
+			Name: <input type="text" xp-param-type="form" name="name" xp-result-value="jp:name"> </span>
+			<br/>
+			E-mail: <input type="text" xp-param-type="form" name="email" xp-result-value="jp:email"> </span>
+			<br/>
+			Job: <input type="text" xp-param-type="form" name="job" xp-result-value="jp:job"> </span>
+			<br/>
+
+			<!-- xp-send-on runs the request of the closest xp-box: PUT -->
+			<input type="button" name="send" value="Enviar" xp-send-on="click" />
+		</div>
+	</div>
+
+	<!-- xp-send-on runs the request of the closest xp-box: GET -->
+	<input type="button" name="send" value="Reload" xp-send-on="click" />
+
+</div>
+
+
+<div class="xp-box"
+     id="address_info"
+     xp-request-url="/api/1.0/user/:uid/house/:hid"
+     xp-request-method="GET"
+     xp-before-request=""
+     xp-after-request="js:hshow('#address_info');"
+     xp-action="none">
+
+	<img class="spinner" src="https://stanfy.com/wp-content/uploads/2015/09/1-V3h-VWthi5lL0QySF6qZPw.gif" />
+
+	<div class="data">
+		<input xp-param-type="header" type="hidden" name="Access-Token" xp-param-value="js:jwt" />
+		<input xp-param-type="path" type="hidden" name=":uid" xp-param-value="js:jwtdata.uid" />
+		<input xp-param-type="path" type="hidden" name=":hid" xp-param-value="js:jwtdata.hid" />
+
+
+		<span>Street: </span> <span xp-result-value="jp:street"> </span>
+		<span>Number: </span> <span xp-result-value="jp:number"> </span>
+		<span>City: </span> <span xp-result-value="jp:city"> </span>
+		<span>State: </span> <span xp-result-value="jp:state.code"> </span>
+	</div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/s3u/JSONPath/master/lib/jsonpath.js"></script>
+
+<script src="/xpetacular.js"></script>
+
+<script src="https://cdn.rawgit.com/auth0/jwt-decode/master/build/jwt-decode.min.js"></script>
+
+<script type="text/javascript">
+
+	function storeJwt(v) {
+		if (!v || v.constructor != String) return;
+		jwt = v;	// JWT encoded
+		jwtdata = jwt_decode(jwt);
+		localStorage.setItem("jwt", jwt);	// JWT data encoded as JSON string
+	}
+
+	function clearJwt() {
+		delete window.jwt;
+		delete window.jwtdata;
+		localStorage.removeItem("jwt");
+	}
+
+	function loadJwt() {
+		if (!window.jwt || !window.jwtdata) {
+			storeJwt(localStorage.getItem("jwt"));
+		}
+	}
+
+	function isLogged() {
+		loadJwt();
+		return window.jwt && window.jwtdata && jwtdata.uid > 0 ? true : false;
+	}
+
+	function hshow(sel) {
+		$('#logout').show();
+		$(sel).find('.spinner').hide();
+		$(sel).find('.data').show();
+	}
+
+	$(function() {
+		if (!isLogged()) {
+			$('#login').show();
+			$('#address_info, #user_info').hide();
+		}
+		else {
+			xpetacular(['#address_info', '#user_info' ]);
+			$('#logout').show();
+		}
+
+		setInterval(function() { xpetacular('#welcome'); }, 20000);
+	});
+
+</script>
+
+
+</body>
+</html>
